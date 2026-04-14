@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user preferences and connection status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "theme": { "type": "string", "enum": ["light", "dark", "beige"] }
+      },
+      "required": ["uid", "email"]
+    },
+    "MedicalDocument": {
+      "title": "Medical Document Metadata",
+      "description": "Metadata and AI-extracted info for a medical document",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "driveFileId": { "type": "string" },
+        "userId": { "type": "string" },
+        "extractedData": { "type": "string" },
+        "processedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "driveFileId", "userId"]
+    },
+    "Allergy": {
+      "title": "Allergy Detail",
+      "description": "Extracted allergy information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "reaction": { "type": "string" },
+        "severity": { "type": "string" },
+        "sourceDocId": { "type": "string" },
+        "explanation": { "type": "string" }
+      },
+      "required": ["id", "userId", "name"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "Message in the AI chat history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "role", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/documents/{docId}": { "schema": "MedicalDocument", "description": "Processed docs" },
+    "/allergies/{allergyId}": { "schema": "Allergy", "description": "Extracted allergies" },
+    "/chats/{userId}/messages/{msgId}": { "schema": "ChatMessage", "description": "Chat history" }
+  }
+}
